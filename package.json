@@ -1,0 +1,23 @@
+{
+  "name": "electron-video-player",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build-win":"electron-packager . ElectronVideoPlayer --platform=win32 --arch=x64 --out=dist --overwrite --icon=icon.ico",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "autoprefixer": "^10.4.20",
+    "electron": "^34.0.2",
+    "postcss": "^8.5.1",
+    "tailwindcss": "^3.4.17"
+  },
+  "devDependencies": {
+    "electron-packager": "^17.1.2"
+  }
+}
