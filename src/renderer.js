@@ -9,15 +9,22 @@ window.electron.onOpenFile(async () => {
   }
 });
 
+// Resize window when video loads
+videoPlayer.addEventListener("loadedmetadata", () => {
+  const videoWidth = videoPlayer.videoWidth;
+  const videoHeight = videoPlayer.videoHeight;
+  
+  // Send video size to main process
+  window.electron.setVideoSize(videoWidth, videoHeight);
+});
+
+const ObjectFITVALUES=['contain','cover','fill','none']
+
 // Keyboard controls
 document.addEventListener("keydown", (event) => {
   switch (event.key) {
     case " ":
-      if (videoPlayer.paused) {
-        videoPlayer.play();
-      } else {
-        videoPlayer.pause();
-      }
+      videoPlayer.paused ? videoPlayer.play() : videoPlayer.pause();
       break;
     case "ArrowRight":
       videoPlayer.currentTime += 5;
@@ -36,6 +43,11 @@ document.addEventListener("keydown", (event) => {
       break;
     case "f":
       videoPlayer.requestFullscreen()
+      break;
+    case "a":
+      const index=ObjectFITVALUES.findIndex(e=>e==videoPlayer.style.objectFit)
+      console.log(index);
+      videoPlayer.style.objectFit=(index!=undefined ? (index==(ObjectFITVALUES.length-1) ? ObjectFITVALUES[0]:ObjectFITVALUES[index+1]):ObjectFITVALUES[0])
       break;
   }
 });

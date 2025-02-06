@@ -6,12 +6,15 @@ let mainWindow;
 app.whenReady().then(() => {
   mainWindow = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 450, // Default 16:9 ratio
+    icon: path.join(__dirname, "favicon.ico"),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       nodeIntegration: false,
       contextIsolation: true,
+      devTools:true
     },
+    resizable: true, // Allow resizing while keeping aspect ratio
   });
 
   mainWindow.loadFile("src/index.html");
@@ -31,10 +34,24 @@ app.whenReady().then(() => {
         { type: "separator" },
         { role: "quit" },
       ],
+    }, {
+      label: "View",
+      submenu: [
+        { role: "reload" },
+        { role: "toggledevtools" }, // Add this to enable DevTools
+      ],
     },
   ]);
 
   Menu.setApplicationMenu(menu);
+});
+
+// Handle video aspect ratio from Renderer
+ipcMain.on("set-video-size", (event, width, height) => {
+  if (mainWindow) {
+    mainWindow.setAspectRatio(width / height); // Maintain aspect ratio
+    mainWindow.setSize(width, height);
+  }
 });
 
 ipcMain.handle("open-file", async () => {
