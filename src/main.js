@@ -12,7 +12,9 @@ app.whenReady().then(() => {
       preload: path.join(__dirname, "preload.js"),
       nodeIntegration: false,
       contextIsolation: true,
-      devTools:true
+      devTools:true,
+      sandbox: false, // Required for some media playback
+  autoplayPolicy: "no-user-gesture-required",
     },
     resizable: true, // Allow resizing while keeping aspect ratio
   });
@@ -46,10 +48,9 @@ app.whenReady().then(() => {
   Menu.setApplicationMenu(menu);
 });
 
-// Handle video aspect ratio from Renderer
 ipcMain.on("set-video-size", (event, width, height) => {
   if (mainWindow) {
-    mainWindow.setAspectRatio(width / height); // Maintain aspect ratio
+    mainWindow.setAspectRatio(width / height);
     mainWindow.setSize(width, height);
   }
 });
